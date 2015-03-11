@@ -802,6 +802,12 @@ class InnerBrowser extends Module implements Web
     public function grabCookie($name, array $params = [])
     {
         $params = array_merge($this->defaultCookieParameters, $params);
+        if ($this->client === null) {
+            return null;
+        }
+        if (!method_exists($this->client, 'getCookieJar')) {
+            return null;
+        }
         $this->debugSection('Cookies', $this->client->getCookieJar()->all());
         $cookies = $this->client->getCookieJar()->get($name, $params['path'], $params['domain']);
         if (!$cookies) {
