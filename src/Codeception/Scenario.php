@@ -91,9 +91,13 @@ class Scenario {
     public function runStep(Step $step)
     {
         $this->steps[] = $step;
-        $result = $this->test->runStep($step);
-        $step->executed = true;
-        return $result;
+        try {
+            $result = $this->test->runStep($step);
+            $step->executed = true;
+            return $result;
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
     public function addStep(\Codeception\Step $step)
