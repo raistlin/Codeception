@@ -803,10 +803,10 @@ class InnerBrowser extends Module implements Web
     {
         $params = array_merge($this->defaultCookieParameters, $params);
         if ($this->client === null) {
-            return null;
+            throw new \Exception("Client not found.");
         }
         if (!method_exists($this->client, 'getCookieJar')) {
-            return null;
+            throw new \Exception("Client do not have 'getCookieJar' function.");
         }
         $this->debugSection('Cookies', $this->client->getCookieJar()->all());
         $cookies = $this->client->getCookieJar()->get($name, $params['path'], $params['domain']);
