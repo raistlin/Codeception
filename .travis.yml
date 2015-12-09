@@ -53,6 +53,9 @@ install:
   # Symfony
   - git clone -q -b 2.1 https://github.com/Codeception/symfony-demo.git frameworks-symfony
   - composer install -d frameworks-symfony --no-dev --prefer-source
+  # Symfony 3
+  - git clone -q -b 3.0 https://github.com/Codeception/symfony-demo.git frameworks-symfony-3
+  - composer install -d frameworks-symfony-3 --no-dev --prefer-source
   # ZF1
   - git clone -q -b 2.1 --recursive https://github.com/Naktibalda/codeception-zf1-tests frameworks-zf1
   - composer install -d frameworks-zf1 --no-dev  --prefer-source
@@ -100,11 +103,15 @@ before_script:
   # Symfony
   - php frameworks-symfony/app/console doctrine:schema:create -n --env test
   - php frameworks-symfony/app/console doctrine:fixtures:load -n --env test
+  # Symfony 3
+  - php frameworks-symfony-3/app/console doctrine:schema:create -n --env test
+  - php frameworks-symfony-3/app/console doctrine:fixtures:load -n --env test
   # Build
   - php codecept build -c frameworks-yii-basic/tests
   - '[[ "$TRAVIS_PHP_VERSION" == "hhvm" ]] || [[ "$TRAVIS_PHP_VERSION" == "7" ]] || php codecept build -c frameworks-phalcon'
   - php codecept build -c frameworks-laravel
   - php codecept build -c frameworks-symfony/src/AppBundle
+  - php codecept build -c frameworks-symfony-3/src/AppBundle
   - '[[ "$TRAVIS_PHP_VERSION" == "5.4" ]] || php codecept build -c frameworks-l5'
   - php codecept build -c frameworks-zf1
   - php codecept build -c frameworks-zf2
@@ -118,6 +125,7 @@ script:
   - '[[ "$TRAVIS_PHP_VERSION" == "5.4" ]] || php codecept run -c frameworks-l5' # Laravel5 Tests
   - '[[ "$TRAVIS_PHP_VERSION" == "hhvm" ]] || [[ "$TRAVIS_PHP_VERSION" == "7" ]] || php codecept run functional -c frameworks-phalcon' # Phalcon Tests
   - php codecept run functional -c frameworks-symfony/src/AppBundle # Symfony Tests
+  - php codecept run functional -c frameworks-symfony-3/src/AppBundle # Symfony 3 Tests
   - php codecept run functional -c frameworks-zf1 # ZF1 Tests
   - php codecept run functional -c frameworks-zf2 # ZF2 Tests
   - '[[ "$TRAVIS_PHP_VERSION" == "5.4" ]] || php codecept run functional -c frameworks-zend-expressive' # Zend Expressive Tests
